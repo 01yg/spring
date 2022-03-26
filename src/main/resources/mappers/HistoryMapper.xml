@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.web.dao.HistoryDAO">
+    <select id="createHistory">
+        CREATE TABLE HISTORY (
+            name VARCHAR(20), # // "삼양사", 회사명
+            date VARCHAR(19), # // "2022-02-04 00:00:00", 오늘 날짜
+            reason VARCHAR(100) # // "KOSPI", 사유
+        );
+    </select>
+
+    <insert id="insertHistory" parameterType="com.example.web.dto.HistoryDTO">
+        INSERT INTO
+            HISTORY (name, date, reason)
+        VALUES
+            (#{name}, #{date}, #{reason})
+    </insert>
+</mapper>

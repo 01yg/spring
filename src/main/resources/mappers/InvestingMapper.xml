@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.web.dao.InvestingDAO">
+    <select id="createInvesting">
+        CREATE TABLE INVESTING (
+            createTime timestamp,
+            stock VARCHAR(20),
+            current int,
+            high int,
+            low int,
+            changePrice int,
+            changeRate int,
+            tradingVolume BIGINT,
+            tradeTime VARCHAR(10)
+        );
+    </select>
+
+    <insert id="insertInvesting" parameterType="java.util.List">
+        INSERT INTO
+            INVESTING (
+                createTime,
+                stock,
+                current,
+                high,
+                low,
+                changePrice,
+                changeRate,
+                tradingVolume,
+                tradeTime
+            )
+        VALUES
+            <foreach item="item" index="index" collection="list" separator=" , ">
+            (
+                now(),
+                #{item.stock},
+                #{item.current},
+                #{item.high},
+                #{item.low},
+                #{item.changePrice},
+                #{item.changeRate},
+                #{item.tradingVolume},
+                #{item.tradeTime}
+            )
+            </foreach>
+    </insert>
+</mapper>

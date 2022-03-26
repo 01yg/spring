@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.web.dao.StockDAO">
+    <select id="createStock">
+        CREATE TABLE STOCK (
+            currentTime TIMESTAMP,
+            symbolCode VARCHAR(7), # // "A145990", 코드
+            code VARCHAR(12), # // "KR7145990008", 코드
+            openingPrice VARCHAR(10), # // 62500, 시가
+            highPrice int, # // 63700, 고가
+            lowPrice int, # // 62200, 저가
+            tradePrice int, # // 63700, 현재가
+            prevClosingPrice int, # // 62400, 전일
+            `change` VARCHAR(20), # // "RISE", 업종
+            changePrice int, # // 1300, 등락금액
+            changeRate VARCHAR(20), # // 0.0208333333, 등락률?
+            name VARCHAR(20), # // "삼양사", 회사명
+            date DATE, # // "2022-02-04", 오늘 날짜
+            tradeDate VARCHAR(8), # // "20220204", 오늘 날짜
+            exchangeDate TIMESTAMP, # // "2022-02-04 18:00:30", 마지막 변화 날?
+            market VARCHAR(10), # // "KOSPI", 시장
+            accTradePrice int, # // 1624757500, 거래대금
+            accTradeVolume int, # // 25701, 거래량
+            prevAccTradeVolume int, # // 12611, 전일 거래량
+            prevAccTradeVolumeChangeRate VARCHAR(20), # // 2.0379827135040838,
+            marketCap int, # // 656966701300, 시가총액
+            high52wPrice VARCHAR(20), # // 80000.0, 52주 최고
+            high52wDate DATE, # // "2021-09-16", 52주 최고 일
+            low52wPrice VARCHAR(20), # // 53900.0, 52주 최저
+            low52wDate DATE, # // "2021-02-26", 52주 최저 일
+            upperLimitPrice VARCHAR(20), # // 81100.0, 상한가
+            lowerLimitPrice VARCHAR(20), # // 43700.0, 하한가
+            foreignRatio VARCHAR(20), # // 5.79, 외국인 비율
+            parValue VARCHAR(20), # // 5000.0, 액면가
+            eps int, # // 5396, EPS
+            dps int, # // 1250, DPS
+            per VARCHAR(20), # // 11.57, PER
+            bps int, # // 116622, BPS
+            pbr VARCHAR(20), # // 0.54, PBR
+            sectorName VARCHAR(20), # // "음식료품", 업종
+            wicsSectorName VARCHAR(20), # // "식품", WICS
+            wicsSectorChangeRate VARCHAR(20), # // 0.0273307302, WICS 업종 상승률?
+            listedShareCount VARCHAR(20), # // 10313449, 상장주식수
+            sectorPer VARCHAR(20), # // 11.83352, 업종 PER
+            highInYearPrice VARCHAR(20), # // 64700.0, 연중 최고가
+            lowInYearPrice VARCHAR(20), # // 58000.0, 연중 최저가
+            capitalStock VARCHAR(20), # // 51567245000.0, 자본금
+            bidPrice int, # // 63600, 매도
+            askPrice int # // 63700, 매수
+        );
+    </select>
+
+    <insert id="insertStock" parameterType="java.util.List">
+        INSERT INTO
+            STOCK (
+                currentTime,
+                symbolCode,
+                code,
+                openingPrice,
+                highPrice,
+                lowPrice,
+                tradePrice,
+                prevClosingPrice,
+                `change`,
+                changePrice,
+                changeRate,
+                name,
+                date,
+                tradeDate,
+                exchangeDate,
+                market,
+                accTradePrice,
+                accTradeVolume,
+                prevAccTradeVolume,
+                prevAccTradeVolumeChangeRate,
+                marketCap,
+                high52wPrice,
+                high52wDate,
+                low52wPrice,
+                low52wDate,
+                upperLimitPrice,
+                lowerLimitPrice,
+                foreignRatio,
+                parValue,
+                eps,
+                dps,
+                per,
+                bps,
+                pbr,
+                sectorName,
+                wicsSectorName,
+                wicsSectorChangeRate,
+                listedShareCount,
+                sectorPer,
+                highInYearPrice,
+                lowInYearPrice,
+                capitalStock,
+                bidPrice,
+                askPrice
+            )
+        VALUES
+            <foreach item="item" index="index" collection="list" separator=" , ">
+            (
+                #{item.currentTime},
+                #{item.symbolCode},
+                #{item.code},
+                #{item.openingPrice},
+                #{item.highPrice},
+                #{item.lowPrice},
+                #{item.tradePrice},
+                #{item.prevClosingPrice},
+                #{item.change},
+                #{item.changePrice},
+                #{item.changeRate},
+                #{item.name},
+                #{item.date},
+                #{item.tradeDate},
+                #{item.exchangeDate},
+                #{item.market},
+                #{item.accTradePrice},
+                #{item.accTradeVolume},
+                #{item.prevAccTradeVolume},
+                #{item.prevAccTradeVolumeChangeRate},
+                #{item.marketCap},
+                #{item.high52wPrice},
+                #{item.high52wDate},
+                #{item.low52wPrice},
+                #{item.low52wDate},
+                #{item.upperLimitPrice},
+                #{item.lowerLimitPrice},
+                #{item.foreignRatio},
+                #{item.parValue},
+                #{item.eps},
+                #{item.dps},
+                #{item.per},
+                #{item.bps},
+                #{item.pbr},
+                #{item.sectorName},
+                #{item.wicsSectorName},
+                #{item.wicsSectorChangeRate},
+                #{item.listedShareCount},
+                #{item.sectorPer},
+                #{item.highInYearPrice},
+                #{item.lowInYearPrice},
+                #{item.capitalStock},
+                #{item.bidPrice},
+                #{item.askPrice}
+            )
+            </foreach>
+    </insert>
+
+    <insert id="insert" parameterType="java.util.List">
+        INSERT INTO account(
+        id,
+        age
+        ) VALUES
+        <foreach item="item" index="index" collection="list">
+            (
+            #{item.id}
+            ,#{item.age}
+            )
+        </foreach>
+    </insert>
+</mapper>
