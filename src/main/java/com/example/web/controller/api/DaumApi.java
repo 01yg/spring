@@ -1,7 +1,6 @@
 package com.example.web.controller.api;
 
 import com.example.web.controller.db.HistoryDbCtrl;
-import com.example.web.controller.db.StockDbCtrl;
 import com.example.web.dto.HistoryDTO;
 import com.example.web.http.CallApi;
 import com.example.web.util.Util;

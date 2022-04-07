@@ -56,7 +56,8 @@ public class CallApi {
                 br.close();
 
                 JSONObject jObject = new JSONObject(sb.toString());
-                System.out.println(Util.getTodayString() + " : " + DaumApi.includedName + " : api ok");
+                System.out.println(Util.getTodayString() + " : CallApi : api ok");
+                System.out.println(sb.toString());
                 return jObject;
             } else {
                 System.out.println(Util.getTodayString() + " : " + DaumApi.includedName + " : api not ok");

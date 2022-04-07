@@ -3,9 +3,9 @@
 <mapper namespace="com.example.web.dao.HistoryDAO">
     <select id="createHistory">
         CREATE TABLE HISTORY (
-            name VARCHAR(20), # // "삼양사", 회사명
-            date VARCHAR(19), # // "2022-02-04 00:00:00", 오늘 날짜
-            reason VARCHAR(100) # // "KOSPI", 사유
+            name VARCHAR(1000), // 에러명
+            date timestamp, # // "2022-02-04 00:00:00", 오늘 날짜
+            reason VARCHAR(5000) # // 사유
         );
     </select>
 
@@ -13,6 +13,6 @@
         INSERT INTO
             HISTORY (name, date, reason)
         VALUES
-            (#{name}, #{date}, #{reason})
+            (#{name}, now(), #{reason})
     </insert>
 </mapper>

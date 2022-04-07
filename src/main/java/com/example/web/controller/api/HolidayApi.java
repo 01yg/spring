@@ -33,33 +33,44 @@ public class HolidayApi {
     @GetMapping("/isHoliday")
     @ResponseBody
     public boolean isHoliday(@RequestParam("todayString") String todayString) {
-        String[] todays = todayString.split("-");
+        try {
+            String[] todays = todayString.split("-");
 
-        String year= todays[0];
-        String month= todays[1];
+            String year= todays[0];
+            String month= todays[1];
 
-        String url = "http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo?" +
-            "serviceKey=Js10J2bn%2B03d15sWQ6w2qep%2B3QWjnpJeOhm9N%2FzhRxVRngOLJsxVZ6ApZMHVFRlOj5zwGilQXZju8HVYTH0IXA%3D%3D" +
-            "&solYear=" + year +
-            "&solMonth=" + month +
-            "&_type=json" +
-            "&numOfRows=20";
+            String url = "http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo?" +
+                    "serviceKey=Js10J2bn%2B03d15sWQ6w2qep%2B3QWjnpJeOhm9N%2FzhRxVRngOLJsxVZ6ApZMHVFRlOj5zwGilQXZju8HVYTH0IXA%3D%3D" +
+                    "&solYear=" + year +
+                    "&solMonth=" + month +
+                    "&_type=json" +
+                    "&numOfRows=20";
 
-        JSONObject jObject = CallApi.get(url);
+            JSONObject jObject = CallApi.get(url);
+            JSONObject response = jObject.getJSONObject("response");
+            JSONObject body = response.getJSONObject("body");
+            JSONObject items = body.getJSONObject("items");
+            JSONArray item = items.getJSONArray("item");
 
-        JSONObject response = jObject.getJSONObject("response");
-        JSONObject body = response.getJSONObject("body");
-        JSONObject items = body.getJSONObject("items");
-        JSONArray item = items.getJSONArray("item");
-
-        boolean b = false;
-        for(int i = 0; i < item.length(); i++) {
-            b = todayString.replaceAll("-", "").equals(String.valueOf(item.getJSONObject(i).getInt("locdate")));
-            if(b) {
-                break;
+            boolean b = false;
+            for(int i = 0; i < item.length(); i++) {
+                b = todayString.replaceAll("-", "").equals(String.valueOf(item.getJSONObject(i).getInt("locdate")));
+                if(b) {
+                    break;
+                }
             }
+            DaumApi.isHoliday = b;
+            return b;
+        } catch (Exception e) {
+            DaumApi.isHoliday = false;
+            return false;
         }
-        DaumApi.isHoliday = b;
-        return b;
+    }
+
+    @GetMapping("/isHoliday")
+    @ResponseBody
+    public boolean test(@RequestParam("todayString") String todayString) {
+        //getDayOfWeek
+        return true;
     }
 }

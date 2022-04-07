@@ -13,6 +13,7 @@
 package com.example.web.crawling;
 
 import com.example.web.dto.InvestingDTO;
+import com.example.web.util.Util;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -23,17 +24,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class InvestingCrawling {
-    public static ArrayList<InvestingDTO> getInvestings() {
+    public static ArrayList<InvestingDTO> getInvestings() throws Exception {
         final String stockList = "https://kr.investing.com/equities/StocksFilter?noconstruct=1&smlID=694&sid=&tabletype=price&index_id=all";
-        Connection conn = Jsoup.connect(stockList)
-                .header("x-requested-with", "XMLHttpRequest")
-                .method(Connection.Method.GET);
+
         try {
+            Connection conn = Jsoup.connect(stockList)
+                    .header("x-requested-with", "XMLHttpRequest")
+                    .method(Connection.Method.GET);
             Document document = conn.get();
             ArrayList<InvestingDTO> investings = getStockList(document);   // 데이터 리스트
+            System.out.println(Util.getTodayString() + ": investing crawling success");
             return investings;
         } catch (IOException ignored) {
-            return null;
+            System.out.println(Util.getTodayString() + ": investing crawling fail");
+            throw ignored;
         }
     }
 
@@ -77,7 +81,7 @@ public class InvestingCrawling {
                             investing.setChangePrice(Integer.valueOf(td.text()));
                             break;
                         case 5:
-                            investing.setChangeRate(Float.valueOf(td.text().replaceAll("%", "")));
+                            investing.setChangeRate(100+Float.valueOf(td.text().replaceAll("%", "")));
                             break;
                         case 6:
                             if(td.text().contains("K")) { // K 가 포함된 경우

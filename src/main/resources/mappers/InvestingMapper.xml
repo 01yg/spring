@@ -9,7 +9,7 @@
             high int,
             low int,
             changePrice int,
-            changeRate int,
+            changeRate FLOAT,
             tradingVolume BIGINT,
             tradeTime VARCHAR(10)
         );
@@ -31,7 +31,7 @@
         VALUES
             <foreach item="item" index="index" collection="list" separator=" , ">
             (
-                now(),
+                left(now(),16),
                 #{item.stock},
                 #{item.current},
                 #{item.high},
@@ -43,4 +43,26 @@
             )
             </foreach>
     </insert>
+
+    <!-- 하루 전 데이터 넣기 -->
+    <update id="updateInvesting" parameterType="_int">
+        UPDATE
+            INVESTING a,
+            ( SELECT
+                changeRate,
+                tradingVolume,
+                `current`,
+                INVESTING.stock,
+                DATE_ADD(INVESTING.createTime, INTERVAL +#{interval} DAY) as createTime
+            FROM INVESTING ) b
+        SET
+            a.bf1d_changeRate = round(b.changeRate,2),
+            a.bf1d_tradingVolume = b.tradingVolume,
+            a.bf1d_current = b.`current`,
+            a.bf1d_tradingVolumeRate = round(a.tradingVolume / b.tradingVolume * 100,2),
+            a.bf1d_currentRate = round(a.`current` / b.`current` * 100,2)
+        WHERE a.stock = b.stock
+        AND a.createTime = b.createTime
+        AND a.createTime = (select max(createTime) from INVESTING);
+    </update>
 </mapper>
