@@ -38,8 +38,9 @@ public class ScheduleController {
     }
 
     // 테스트 계속 돌기
-    //@Scheduled(cron = "0 * * * * *", zone="Asia/Seoul")
-    //public void schedule4() {
-    //    investingApi.call();
-    //}
+    @Scheduled(cron = "0 * * * * *", zone="Asia/Seoul")
+    public void schedule4() {
+        System.out.println("schedule4");
+        investingApi.call();
+    }
 }

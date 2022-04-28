@@ -9,6 +9,15 @@ public class InvestingDTO {
     float changeRate;
     double tradingVolume;
     String tradeTime;
+    int score;
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 
     public void setStock(String stock) {
         this.stock = stock;

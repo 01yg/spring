@@ -15,6 +15,16 @@
         );
     </select>
 
+    <select id="select" resultType="com.example.web.dto.InvestingDTO">
+        SELECT *
+          FROM INVESTING
+        WHERE createTime = (
+                SELECT MAX(createTime)
+                  FROM INVESTING
+              )
+        ORDER BY bf1d_tradingVolumeRate DESC
+    </select>
+
     <insert id="insertInvesting" parameterType="java.util.List">
         INSERT INTO
             INVESTING (
@@ -44,25 +54,41 @@
             </foreach>
     </insert>
 
+    <update id="updateInvestingTechnical" parameterType="java.util.List">
+        <foreach item="item" index="index" collection="list" separator=";">
+            UPDATE
+                INVESTING
+            <set>
+                score = #{item.score}
+            </set>
+            WHERE stock = #{item.stock}
+            AND createTime LIKE date_format(now(), "%Y-%m-%d %H:%i%")
+        </foreach>
+    </update>
+
+    <!--  -->
+    <select>
+
+    </select>
+
     <!-- 하루 전 데이터 넣기 -->
-    <update id="updateInvesting" parameterType="_int">
+    <update id="updateDataTheDayBefore" parameterType="int">
         UPDATE
-            INVESTING a,
-            ( SELECT
-                changeRate,
-                tradingVolume,
-                `current`,
-                INVESTING.stock,
-                DATE_ADD(INVESTING.createTime, INTERVAL +#{interval} DAY) as createTime
-            FROM INVESTING ) b
-        SET
-            a.bf1d_changeRate = round(b.changeRate,2),
-            a.bf1d_tradingVolume = b.tradingVolume,
-            a.bf1d_current = b.`current`,
-            a.bf1d_tradingVolumeRate = round(a.tradingVolume / b.tradingVolume * 100,2),
-            a.bf1d_currentRate = round(a.`current` / b.`current` * 100,2)
+              INVESTING a,
+              (SELECT INVESTING.changeRate,
+                      INVESTING.tradingVolume,
+                      INVESTING.`current`,
+                      INVESTING.stock,
+                      DATE_ADD(INVESTING.createTime, INTERVAL +#{interval} DAY) as createTime
+                 FROM INVESTING) b
+          SET a.bf1d_changeRate = round(b.changeRate,2),
+              a.bf1d_tradingVolume = b.tradingVolume,
+              a.bf1d_current = b.`current`,
+              a.bf1d_tradingVolumeRate = round(a.tradingVolume / b.tradingVolume * 100,2),
+              a.bf1d_currentRate = round(a.`current` / b.`current` * 100,2)
         WHERE a.stock = b.stock
-        AND a.createTime = b.createTime
-        AND a.createTime = (select max(createTime) from INVESTING);
+          AND a.createTime = b.createTime
+          AND b.createTime LIKE date_format(now(), "%Y-%m-%d %H:%i%")
+          AND a.bf1d_changeRate IS NOT NULL
     </update>
 </mapper>

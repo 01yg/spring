@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.example.web.util.Util.getOpeningDate;
+
 @RestController
 @RequestMapping("/holiday")
 public class HolidayApi {
@@ -67,10 +69,9 @@ public class HolidayApi {
         }
     }
 
-    @GetMapping("/isHoliday")
+    @GetMapping("/getOpeningDate")
     @ResponseBody
-    public boolean test(@RequestParam("todayString") String todayString) {
-        //getDayOfWeek
-        return true;
+    public String openingDate() {
+        return getOpeningDate();
     }
 }
