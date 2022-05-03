@@ -54,6 +54,7 @@
             </foreach>
     </insert>
 
+    <!-- 점수 업데이트 -->
     <update id="updateInvestingTechnical" parameterType="java.util.List">
         <foreach item="item" index="index" collection="list" separator=";">
             UPDATE
@@ -65,11 +66,6 @@
             AND createTime LIKE date_format(now(), "%Y-%m-%d %H:%i%")
         </foreach>
     </update>
-
-    <!--  -->
-    <select>
-
-    </select>
 
     <!-- 하루 전 데이터 넣기 -->
     <update id="updateDataTheDayBefore" parameterType="int">
