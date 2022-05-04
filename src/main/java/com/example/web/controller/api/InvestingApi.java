@@ -1,6 +1,9 @@
 package com.example.web.controller.api;
 
+import com.example.web.controller.db.HistoryDbCtrl;
 import com.example.web.controller.db.InvestingCtrl;
+import com.example.web.dao.InvestingDAO;
+import com.example.web.dto.HistoryDTO;
 import com.example.web.dto.InvestingDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +17,12 @@ import java.util.List;
 public class InvestingApi {
     @Autowired
     InvestingCtrl ctrl;
+
+    @Autowired
+    private InvestingDAO investingDAO;
+
+    @Autowired
+    HistoryDbCtrl history;
 
     // 1분 마다 크롤링
     @GetMapping("/postCall")
@@ -29,6 +38,16 @@ public class InvestingApi {
         if(investings != null) {
             System.out.println("ctrl.insertTechnical()");
             investings = ctrl.insertTechnical(investings);
+
+            try { // 여기가 3번 실제로 인서트를 함
+                investingDAO.insertInvesting(investings);
+            } catch (Exception e) {
+                HistoryDTO historyDTO = new HistoryDTO();
+                historyDTO.setName("investing insert fail");
+                historyDTO.setReason(e.getMessage());
+                history.insert(historyDTO);
+            }
+
             //if(investings != null) {
             //    System.out.println("ctrl.updateDataTheDayBefore()");
             //    ctrl.updateDataTheDayBefore(investings);
