@@ -3,7 +3,7 @@
 <mapper namespace="com.example.web.dao.HistoryDAO">
     <select id="createHistory">
         CREATE TABLE HISTORY (
-            name VARCHAR(1000), // 에러명
+            name VARCHAR(1000), # // 에러명
             date timestamp, # // "2022-02-04 00:00:00", 오늘 날짜
             reason VARCHAR(5000) # // 사유
         );

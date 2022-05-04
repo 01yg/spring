@@ -11,7 +11,8 @@
             changePrice int,
             changeRate FLOAT,
             tradingVolume BIGINT,
-            tradeTime VARCHAR(10)
+            tradeTime VARCHAR(10),
+            score int
         );
     </select>
 
