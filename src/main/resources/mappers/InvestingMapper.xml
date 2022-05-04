@@ -4,7 +4,7 @@
     <select id="createInvesting">
         CREATE TABLE INVESTING (
             createTime timestamp,
-            stock VARCHAR(20),
+            stock VARCHAR(100),
             current int,
             high int,
             low int,
@@ -23,7 +23,7 @@
                 SELECT MAX(createTime)
                   FROM INVESTING
               )
-        ORDER BY bf1d_tradingVolumeRate DESC
+        ORDER BY score DESC
     </select>
 
     <insert id="insertInvesting" parameterType="java.util.List">
@@ -37,7 +37,8 @@
                 changePrice,
                 changeRate,
                 tradingVolume,
-                tradeTime
+                tradeTime,
+                score
             )
         VALUES
             <foreach item="item" index="index" collection="list" separator=" , ">
@@ -50,7 +51,8 @@
                 #{item.changePrice},
                 #{item.changeRate},
                 #{item.tradingVolume},
-                #{item.tradeTime}
+                #{item.tradeTime},
+                #{item.score}
             )
             </foreach>
     </insert>
