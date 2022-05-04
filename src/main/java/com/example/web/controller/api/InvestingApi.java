@@ -8,12 +8,13 @@ import com.example.web.dto.InvestingDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 @RestController
 @RequestMapping("/investing")
-@CrossOrigin(origins = "http://18.220.98.204:3000")
+@CrossOrigin(origins = "http://20.212.153.248")
 public class InvestingApi {
     @Autowired
     InvestingCtrl ctrl;
@@ -40,8 +41,16 @@ public class InvestingApi {
             investings = ctrl.insertTechnical(investings);
 
             try { // 여기가 3번 실제로 인서트를 함
-                investingDAO.insertInvesting(investings);
+                ArrayList<InvestingDTO> list = new ArrayList();
+                investings.forEach((strKey, strValue) -> {
+                    list.add(strValue);
+                });
+
+                System.out.println("investingDAO.insertInvesting(investings)");
+                investingDAO.insertInvesting(list);
             } catch (Exception e) {
+                System.out.println(e.getMessage());
+                System.out.println("investing insert fail");
                 HistoryDTO historyDTO = new HistoryDTO();
                 historyDTO.setName("investing insert fail");
                 historyDTO.setReason(e.getMessage());
