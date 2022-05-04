@@ -50,20 +50,6 @@ public class InvestingCtrl {
         //}
     }
 
-    public Boolean insertInvesting(HashMap<String, InvestingDTO> investingDtos) {
-        try {
-            int result = investingDAO.insertInvesting(investingDtos);
-            return result != 0;
-        } catch (Exception e) {
-            HistoryDTO historyDTO = new HistoryDTO();
-            historyDTO.setName("investing insert fail");
-            historyDTO.setReason(e.getMessage());
-            history.insert(historyDTO);
-
-            return false;
-        }
-    }
-
     public HashMap<String, InvestingDTO> insertTechnical(HashMap<String, InvestingDTO> investings) {
         HashMap<String, InvestingDTO> investingDtos;
         try {
