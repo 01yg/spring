@@ -26,6 +26,9 @@ public class ScheduleController {
     @Scheduled(cron = "0 * 9-14 * * MON-FRI", zone="Asia/Seoul")
     public void schedule2() {
         if(!DaumApi.isHoliday) {
+            // 스케쥴러 순서도
+            // 1. isHoliday 휴일 체크
+            // 2. 인베스팅 api 호출
             investingApi.call();
         }
     }
@@ -38,9 +41,9 @@ public class ScheduleController {
     }
 
     // 테스트 계속 돌기
-    @Scheduled(cron = "0 * * * * *", zone="Asia/Seoul")
-    public void schedule4() {
-        System.out.println("schedule4");
-        investingApi.call();
-    }
+    //@Scheduled(cron = "0 * * * * *", zone="Asia/Seoul")
+    //public void schedule4() {
+    //    System.out.println("schedule4");
+    //    investingApi.call();
+    //}
 }
