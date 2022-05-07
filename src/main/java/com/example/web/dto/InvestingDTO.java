@@ -10,6 +10,15 @@ public class InvestingDTO {
     double tradingVolume;
     String tradeTime;
     int score;
+    String isuCd;
+
+    public String getIsuCd() {
+        return isuCd;
+    }
+
+    public void setIsuCd(String isuCd) {
+        this.isuCd = isuCd;
+    }
 
     public int getScore() {
         return score;

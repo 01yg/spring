@@ -12,6 +12,7 @@
 * */
 package com.example.web.crawling;
 
+import com.example.web.controller.api.KrxApi;
 import com.example.web.dto.InvestingDTO;
 import com.example.web.util.Util;
 import org.json.JSONObject;

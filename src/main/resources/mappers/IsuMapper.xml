@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.web.dao.IsuDAO">
+    <select id="create">
+        CREATE TABLE ISU (
+            ISU_ABBRV VARCHAR(100),
+            ISU_SRT_CD VARCHAR(100)
+        );
+    </select>
+
+    <select id="deleteIsu">
+        DELETE FROM ISU;
+    </select>
+
+    <insert id="insertIsu" parameterType="java.util.List">
+        INSERT INTO ISU (
+            ISU_ABBRV,
+            ISU_SRT_CD
+        ) VALUES
+        <foreach item="item" index="index" collection="list" separator=" , ">
+            (
+                #{item.ISU_ABBRV},
+                #{item.ISU_SRT_CD}
+            )
+        </foreach>
+    </insert>
+</mapper>
