@@ -14,8 +14,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/investing")
-//@CrossOrigin(origins = "http://20.212.153.248")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://20.214.141.2")
+//@CrossOrigin(origins = "http://localhost:3000")
 public class InvestingApi {
     @Autowired
     InvestingCtrl ctrl;
