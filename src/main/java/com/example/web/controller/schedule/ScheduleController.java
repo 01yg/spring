@@ -19,8 +19,11 @@ public class ScheduleController {
     // 8:59
     @Scheduled(cron = "0 59 8 * * MON-FRI", zone="Asia/Seoul")
     public void schedule1() {
+        // 오늘 날짜 테이블 생성
+        investingApi.createTable();
         // 홀리데이 초기화
         holiday.isHoliday(Util.getTodayString2());
+
     }
     // 9:00 ~ 14:59 25
     @Scheduled(cron = "0 * 9-14 * * MON-FRI", zone="Asia/Seoul")
