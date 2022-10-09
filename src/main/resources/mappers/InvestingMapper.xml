@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.web.dao.InvestingDAO">
-    <select id="createInvesting">
-        CREATE TABLE INVESTING (
-            createTime timestamp,
-            stock VARCHAR(100),
-            current int,
-            high int,
-            low int,
-            changePrice int,
-            changeRate FLOAT,
-            tradingVolume BIGINT,
-            tradeTime VARCHAR(10),
-            score int
+    <select id="createInvesting" parameterType="String">
+        CREATE TABLE `investing${value}` (
+        `createTime` timestamp NULL DEFAULT NULL,
+        `current` int(11) DEFAULT NULL,
+        `high` int(11) DEFAULT NULL,
+        `low` int(11) DEFAULT NULL,
+        `changePrice` int(11) DEFAULT NULL,
+        `changeRate` float DEFAULT NULL,
+        `tradingVolume` bigint(20) DEFAULT NULL,
+        `tradeTime` varchar(10) CHARACTER SET utf8 DEFAULT NULL,
+        `score` int(11) DEFAULT NULL,
+        `stock` varchar(100) CHARACTER SET utf8 DEFAULT NULL
         );
     </select>
 
@@ -31,9 +31,9 @@
         ORDER BY a.score DESC
     </select>
 
-    <insert id="insertInvesting" parameterType="java.util.List">
+    <insert id="insertInvesting" parameterType="java.util.Map">
         INSERT INTO
-            INVESTING (
+            INVESTING${date} (
                 createTime,
                 stock,
                 current,
@@ -66,7 +66,7 @@
     <update id="updateInvestingTechnical" parameterType="java.util.List">
         <foreach item="item" index="index" collection="list" separator=";">
             UPDATE
-                INVESTING
+                INVESTING${value}
             <set>
                 score = #{item.score}
             </set>
