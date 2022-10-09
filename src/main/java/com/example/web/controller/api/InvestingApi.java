@@ -5,17 +5,19 @@ import com.example.web.controller.db.InvestingCtrl;
 import com.example.web.dao.InvestingDAO;
 import com.example.web.dto.HistoryDTO;
 import com.example.web.dto.InvestingDTO;
+import com.example.web.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/investing")
-@CrossOrigin(origins = "http://20.214.141.2")
-//@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://20.214.141.2")
+@CrossOrigin(origins = "http://localhost:3000")
 public class InvestingApi {
     @Autowired
     InvestingCtrl ctrl;
@@ -25,6 +27,15 @@ public class InvestingApi {
 
     @Autowired
     HistoryDbCtrl history;
+
+    // 하루에 한번 테이블 생성
+    //createInvesting
+    @GetMapping("/createTable")
+    @ResponseBody
+    public void createTable() {
+        // 오늘 날짜 가져오기
+        investingDAO.createInvesting(Util.getTodayString3());
+    }
 
     // 1분 마다 크롤링
     @GetMapping("/postCall")
@@ -42,13 +53,18 @@ public class InvestingApi {
             investings = ctrl.insertTechnical(investings);
 
             try { // 여기가 3번 실제로 인서트를 함
+                Map<String,Object> map = new HashMap<String,Object>();
+
                 ArrayList<InvestingDTO> list = new ArrayList();
                 investings.forEach((strKey, strValue) -> {
                     list.add(strValue);
                 });
 
+                map.put("list", list);
+                map.put("date", Util.getTodayString3());
+
                 System.out.println("investingDAO.insertInvesting(investings)");
-                investingDAO.insertInvesting(list);
+                investingDAO.insertInvesting(map);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("investing insert fail");
