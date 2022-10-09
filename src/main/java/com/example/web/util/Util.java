@@ -37,6 +37,18 @@ public class Util {
         return todayString;
     }
 
+    public static String getTodayString3() {
+        SimpleDateFormat formatTime = new SimpleDateFormat("yyyyMMdd", Locale.KOREAN);
+
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
+        formatTime.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+
+        String todayString = formatTime.format(date);
+
+        return todayString;
+    }
+
     public static boolean getDayOfWeek(LocalDate date) {
         // 1. LocalDate 생성
         //LocalDate date = LocalDate.of(date.getYear(), 12, 25);
