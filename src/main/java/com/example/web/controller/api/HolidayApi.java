@@ -1,6 +1,7 @@
 package com.example.web.controller.api;
 
 import com.example.web.http.CallApi;
+import com.example.web.util.Util;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class HolidayApi {
 
     @GetMapping("/call")
     @ResponseBody
-    public List call(@RequestParam("todayString") String todayString) {
+    public List call(@RequestParam(value="todayString", required=false) String todayString) {
         String url = "http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo?" +
                 "serviceKey=Js10J2bn%2B03d15sWQ6w2qep%2B3QWjnpJeOhm9N%2FzhRxVRngOLJsxVZ6ApZMHVFRlOj5zwGilQXZju8HVYTH0IXA%3D%3D" +
                 "&solYear=" + 2022 +
@@ -34,7 +35,10 @@ public class HolidayApi {
 
     @GetMapping("/isHoliday")
     @ResponseBody
-    public boolean isHoliday(@RequestParam("todayString") String todayString) {
+    public boolean isHoliday(@RequestParam(value="todayString", required=false) String todayString) {
+        if (todayString == null) {
+            todayString = Util.getTodayString2();
+        }
         try {
             String[] todays = todayString.split("-");
 

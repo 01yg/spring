@@ -3,7 +3,6 @@ package com.example.web.controller.schedule;
 import com.example.web.controller.api.DaumApi;
 import com.example.web.controller.api.HolidayApi;
 import com.example.web.controller.api.InvestingApi;
-import com.example.web.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -17,12 +16,12 @@ public class ScheduleController {
     InvestingApi investingApi;
 
     // 8:59
-    @Scheduled(cron = "0 59 8 * * MON-FRI", zone="Asia/Seoul")
+    @Scheduled(cron = "0 56 8 * * MON-FRI", zone="Asia/Seoul")
     public void schedule1() {
         // 오늘 날짜 테이블 생성
         investingApi.createTable();
         // 홀리데이 초기화
-        holiday.isHoliday(Util.getTodayString2());
+        holiday.isHoliday(null);
 
     }
     // 9:00 ~ 14:59 25
