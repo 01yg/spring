@@ -1,21 +1,24 @@
 package com.example.web.controller.api;
 
 import com.example.web.controller.db.HistoryDbCtrl;
+import com.example.web.crawling.DaumCrawling;
 import com.example.web.dto.HistoryDTO;
-import com.example.web.http.CallApi;
+import com.example.web.http.DaumHttp;
 import com.example.web.util.Util;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
 @RequestMapping("/daum")
+@CrossOrigin(origins = "" +
+        "http://localhost:3000, " +
+        "http://113.131.152.55:3000")
 public class DaumApi {
     @Autowired
     HistoryDbCtrl history;
@@ -193,7 +196,7 @@ public class DaumApi {
     @GetMapping("/includedStocks")
     public void getIncludedStocks() {
         String url = "https://finance.daum.net/api/sectors/"+includedCode+"/includedStocks?symbolCode="+includedCode+"&page=1&perPage=100&fieldName=changeRate&order=desc&pagination=true";
-        JSONObject jObject = CallApi.get(url);
+        JSONObject jObject = DaumHttp.get(url);
         if(jObject == null) {
             HistoryDTO historyDTO = new HistoryDTO();
             historyDTO.setDate(Util.getTodayString());
@@ -212,7 +215,7 @@ public class DaumApi {
         String code = object.getString("code");
         //String name = object.getString("name");
         String url = "https://finance.daum.net/api/quotes/"+code+"?summary=false&changeStatistics=true";
-        JSONObject data = CallApi.get(url);
+        JSONObject data = DaumHttp.get(url);
 
         //HistoryDTO historyDTO = new HistoryDTO();
         //historyDTO.setDate(Util.getTodayString());
@@ -273,5 +276,72 @@ public class DaumApi {
     @ResponseBody
     public List getQuotes() {
         return quotes.putAll(quotes).toList();
+    }
+
+    // 투자의견 컨피니언
+    @GetMapping("/opinion")
+    @ResponseBody
+    public HashMap opinion(@RequestParam(value="isuName", required = false) String isuName) throws Exception {
+        return DaumCrawling.getDaumC1010001(isuName);
+    }
+
+    // 기업개요 & history
+    @GetMapping("/summary")
+    @ResponseBody
+    public HashMap summary(@RequestParam(value="isuName", required = false) String isuName) throws Exception {
+        return DaumCrawling.getDaumC1020001(isuName);
+    }
+
+    // https://finance.daum.net/api/quote/A005930/financials
+    @GetMapping("/financials")
+    @ResponseBody
+    public String financials(@RequestParam(value="isuName", required = false) String isuName) throws Exception {
+        return DaumHttp.get("https://finance.daum.net/api/quote/A005930/financials").toString();
+    }
+
+    // 시세 및 주주 현황
+    @GetMapping("/api")
+    @ResponseBody
+    public HashMap api(@RequestParam(value="isuName", required = false) String isuName) throws Exception {
+        return null;
+    }
+
+    // 전체
+    @GetMapping("/data")
+    @ResponseBody
+    public HashMap data(@RequestParam(value="isuName", required = false) String isuName) throws Exception {
+        HashMap<String, Object> result = new HashMap<>();
+        // 투자의견 컨피니언
+        result.put("opinion", DaumCrawling.getDaumC1010001(isuName));
+        // 기업개요
+        HashMap daumC1020001 = DaumCrawling.getDaumC1020001(isuName);
+        result.put("summary", daumC1020001.get("summary"));
+        // history
+        result.put("history", daumC1020001.get("history"));
+        // financials
+        String isuCode = KrxApi.isu.get(isuName);
+        result.put("financials", toFinancials(DaumHttp.get("https://finance.daum.net/api/quote/A"+isuCode+"/financials")));
+        // 기업 및 주주 현황 (status)
+        result.put(
+            "status",
+            DaumHttp.get("https://finance.daum.net/api/quotes/A"+isuCode+"?summary=false&changeStatistics=true").toMap()
+        );
+
+        return result;
+    }
+
+    public List toFinancials(JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject.getJSONObject("data").getJSONArray("QUARTER");
+        String arg[] = {"date", "debtRatio", "dividendPerShare", "eps", "netIncome", "operatingProfit", "roe", "sales"};
+        HashMap<String, Object> hashMap = new HashMap<>();
+
+        ArrayList list = new ArrayList();
+
+        for (Object o : jsonArray) {
+            JSONObject jsonLineItem = (JSONObject) o;
+            list.add(jsonLineItem.toMap());
+        }
+
+        return list;
     }
 }
