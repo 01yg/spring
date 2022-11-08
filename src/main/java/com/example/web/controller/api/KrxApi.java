@@ -13,8 +13,12 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("/krx")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "" +
+        "http://localhost:3000, " +
+        "http://113.131.152.55:3000")
 public class KrxApi {
+    public static HashMap<String, String> isu;
+
     @Autowired
     private IsuDAO isuDAO;
 
@@ -23,6 +27,7 @@ public class KrxApi {
     @ResponseBody
     public void call() {
         ArrayList<IsuDTO> isus = new ArrayList();
+        HashMap<String, String> isuMap = new HashMap<>();
 
         // 초기화
         isus.clear();
@@ -38,6 +43,7 @@ public class KrxApi {
             JSONObject block = (JSONObject) outBlock;
             isu.setISU_ABBRV(block.getString("ISU_ABBRV"));
             isu.setISU_SRT_CD(block.getString("ISU_SRT_CD"));
+            isuMap.put(block.getString("ISU_ABBRV"), block.getString("ISU_SRT_CD"));
             isus.add(isu);
         });
 
@@ -46,5 +52,13 @@ public class KrxApi {
 
         // 디비 인서트
         isuDAO.insertIsu(isus);
+
+        isu = (HashMap<String, String>) isuMap.clone();
+    }
+
+    @GetMapping("/getIsu")
+    @ResponseBody
+    public String getIsuCode(@RequestParam(value="isuName", required = false) String isuName) {
+        return isu.get(isuName);
     }
 }

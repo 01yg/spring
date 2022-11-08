@@ -3,15 +3,19 @@ package com.example.web.controller.api;
 import com.example.web.controller.DataCtrl;
 import com.example.web.controller.db.StockDbCtrl;
 import com.example.web.dto.StockDTO;
-import com.example.web.http.CallApi;
+import com.example.web.http.DaumHttp;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.ArrayList;
 
 @Component
+@CrossOrigin(origins = "" +
+        "http://localhost:3000, " +
+        "http://113.131.152.55:3000")
 public class StockApi {
     @Autowired
     StockDbCtrl stock;
@@ -24,7 +28,7 @@ public class StockApi {
         ArrayList<StockDTO> stocks = new ArrayList<>();
         for(int i = 0; i < arr.length ; i++) {
             String url = "http://"+arr[i]+"/daum/quotes";
-            JSONArray jArray = CallApi.gets(url);
+            JSONArray jArray = DaumHttp.gets(url);
 
             for(int j = 0; j < jArray.length(); j++) {
                 JSONObject quotes = jArray.getJSONObject(j);

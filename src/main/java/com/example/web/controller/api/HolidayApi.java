@@ -1,6 +1,6 @@
 package com.example.web.controller.api;
 
-import com.example.web.http.CallApi;
+import com.example.web.http.DaumHttp;
 import com.example.web.util.Util;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,6 +12,9 @@ import static com.example.web.util.Util.getOpeningDate;
 
 @RestController
 @RequestMapping("/holiday")
+@CrossOrigin(origins = "" +
+        "http://localhost:3000, " +
+        "http://113.131.152.55:3000")
 public class HolidayApi {
 
     @GetMapping("/call")
@@ -23,7 +26,7 @@ public class HolidayApi {
                 "&solMonth=" + String.format("%02d", 3) +
                 "&_type=json" +
                 "&numOfRows=20";
-        JSONObject jObject = CallApi.get(url);
+        JSONObject jObject = DaumHttp.get(url);
 
         JSONObject response = jObject.getJSONObject("response");
         JSONObject body = response.getJSONObject("body");
@@ -52,7 +55,7 @@ public class HolidayApi {
                     "&_type=json" +
                     "&numOfRows=20";
 
-            JSONObject jObject = CallApi.get(url);
+            JSONObject jObject = DaumHttp.get(url);
             JSONObject response = jObject.getJSONObject("response");
             JSONObject body = response.getJSONObject("body");
             JSONObject items = body.getJSONObject("items");
