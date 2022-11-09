@@ -37,14 +37,14 @@ public class ScheduleController {
             // 스케쥴러 순서도
             // 1. isHoliday 휴일 체크
             // 2. 인베스팅 api 호출
-            //investingApi.call();
+            investingApi.call();
         }
     }
     // 9:00 ~ 14:59 25
     @Scheduled(cron = "0 0-20 15 * * MON-FRI", zone="Asia/Seoul")
     public void schedule3() {
         if(!DaumApi.isHoliday) {
-            //investingApi.call();
+            investingApi.call();
         }
     }
 

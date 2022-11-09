@@ -16,9 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/daum")
-@CrossOrigin(origins = "" +
-        "http://localhost:3000, " +
-        "http://113.131.152.55:3000")
+@CrossOrigin(origins = "http://113.131.152.55:3000")
 public class DaumApi {
     @Autowired
     HistoryDbCtrl history;

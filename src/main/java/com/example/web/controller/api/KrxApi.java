@@ -13,9 +13,7 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("/krx")
-@CrossOrigin(origins = "" +
-        "http://localhost:3000, " +
-        "http://113.131.152.55:3000")
+@CrossOrigin(origins = "http://113.131.152.55:3000")
 public class KrxApi {
     public static HashMap<String, String> isu;
 
