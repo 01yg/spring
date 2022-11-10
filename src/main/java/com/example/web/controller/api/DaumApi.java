@@ -4,6 +4,7 @@ import com.example.web.controller.db.HistoryDbCtrl;
 import com.example.web.crawling.DaumCrawling;
 import com.example.web.dto.HistoryDTO;
 import com.example.web.http.DaumHttp;
+import com.example.web.http.NaverHttp;
 import com.example.web.util.Util;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -324,6 +325,12 @@ public class DaumApi {
             "status",
             DaumHttp.get("https://finance.daum.net/api/quotes/A"+isuCode+"?summary=false&changeStatistics=true").toMap()
         );
+        // 일일 데이터 "day", ""
+        result.put("day", NaverHttp.get("https://api.stock.naver.com/chart/domestic/item/"+isuCode+"?periodType=day").toMap());
+        result.put("month3", NaverHttp.get("https://api.stock.naver.com/chart/domestic/item/"+isuCode+"?periodType=month&range=3").toMap());
+        result.put("month12", NaverHttp.get("https://api.stock.naver.com/chart/domestic/item/"+isuCode+"?periodType=month&range=12").toMap());
+        result.put("year3", NaverHttp.get("https://api.stock.naver.com/chart/domestic/item/"+isuCode+"?periodType=year&range=3").toMap());
+        result.put("year10", NaverHttp.get("https://api.stock.naver.com/chart/domestic/item/"+isuCode+"?periodType=year&range=10").toMap());
 
         return result;
     }
