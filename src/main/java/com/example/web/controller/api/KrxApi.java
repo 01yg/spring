@@ -15,7 +15,10 @@ import java.util.HashMap;
 @RequestMapping("/krx")
 @CrossOrigin(origins = "http://113.131.152.55:3000")
 public class KrxApi {
-    public static HashMap<String, String> isu;
+    public static HashMap<String, String> isu = new HashMap<>() {{
+        put("카카오", "035720");
+        put("에스에이엠티", "031330");
+    }};
 
     @Autowired
     private IsuDAO isuDAO;
