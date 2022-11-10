@@ -12,10 +12,8 @@
 * */
 package com.example.web.crawling;
 
-import com.example.web.controller.api.KrxApi;
 import com.example.web.dto.InvestingDTO;
 import com.example.web.util.Util;
-import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -23,7 +21,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class InvestingCrawling {
