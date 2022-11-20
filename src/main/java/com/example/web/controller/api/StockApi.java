@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.ArrayList;
 
 @Component
-@CrossOrigin(origins = "http://113.131.152.55:3000")
+@CrossOrigin(origins = "http://113.131.152.55:3000, http://localhost:3000")
 public class StockApi {
     @Autowired
     StockDbCtrl stock;
