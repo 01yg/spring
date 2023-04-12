@@ -12,7 +12,7 @@ import static com.example.web.util.Util.getOpeningDate;
 
 @RestController
 @RequestMapping("/holiday")
-@CrossOrigin(origins = {"http://113.131.152.55:3000", "http://localhost:3000"})
+@CrossOrigin(origins = {"http://113.131.145.133:3000", "http://localhost:3000"})
 public class HolidayApi {
 
     @GetMapping("/call")
